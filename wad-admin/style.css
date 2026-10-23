@@ -1,0 +1,283 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "DM Sans", Arial, sans-serif;
+    color: #222222;
+    background-color: #f7f1e8;
+}
+
+.site-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 20px 5%;
+    background-color: white;
+    border-bottom: 1px solid #ece4da;
+}
+
+.brand {
+    color: #d7263d;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.admin-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    background-color: #222222;
+    color: white;
+    font-size: 12px;
+}
+
+.site-header nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.site-header nav a {
+    color: #222222;
+    text-decoration: none;
+}
+
+.site-header nav a:hover {
+    color: #b01f33;
+}
+
+.page-width {
+    max-width: 1100px;
+    margin: 32px auto;
+    padding: 0 20px;
+}
+
+h1 {
+    margin-top: 0;
+}
+
+.muted {
+    color: #6a625a;
+}
+
+.page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+}
+
+.stat, .card, .login-card {
+    padding: 24px;
+    background-color: white;
+    border: 1px solid #eee7df;
+    border-radius: 16px;
+}
+
+.stat strong {
+    display: block;
+    margin-bottom: 12px;
+    font-size: 32px;
+}
+
+.stat span {
+    color: #6a625a;
+}
+
+.btn {
+    display: inline-block;
+    padding: 12px 18px;
+    min-height: 44px;
+    background-color: #d7263d;
+    border: 1px solid #d7263d;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font: inherit;
+    cursor: pointer;
+}
+
+.btn-outline {
+    background-color: white;
+    border-color: #dad1c7;
+    color: #222222;
+}
+
+.btn-small {
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 13px;
+}
+
+.button-row, .actions, .filters {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.actions form {
+    margin: 0;
+}
+
+.link-danger {
+    min-height: 36px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    color: #b01f33;
+    cursor: pointer;
+    font: inherit;
+}
+
+.table-wrap {
+    width: 100%;
+    margin-top: 20px;
+    overflow-x: auto;
+    border-radius: 16px;
+    background-color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 14px;
+    text-align: left;
+    border-bottom: 1px solid #eee7df;
+    vertical-align: top;
+}
+
+th {
+    background-color: #fbf8f4;
+}
+
+.tag {
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.tag.active, .tag.approved {
+    background-color: #e5f4ea;
+    color: #17692f;
+}
+
+.tag.pending {
+    background-color: #fff4db;
+    color: #745900;
+}
+
+.tag.inactive, .tag.rejected, .tag.cancelled {
+    background-color: #fdecee;
+    color: #a32b3f;
+}
+
+.alert, .ok {
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.alert {
+    background-color: #fdecee;
+    color: #a32b3f;
+}
+
+.ok {
+    background-color: #e5f4ea;
+    color: #17692f;
+}
+
+.form-card {
+    max-width: 700px;
+}
+
+label {
+    display: block;
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+input, textarea, select {
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid #d4cec5;
+    border-radius: 10px;
+    font: inherit;
+}
+
+textarea {
+    min-height: 110px;
+}
+
+.form-card .button-row {
+    margin-top: 20px;
+}
+
+.login-page {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+}
+
+.login-card .btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.filters {
+    margin: 18px 0;
+}
+
+.filters a {
+    padding: 9px 14px;
+    border: 1px solid #d4cec5;
+    border-radius: 20px;
+    color: #222222;
+    text-decoration: none;
+    background-color: white;
+}
+
+@media (max-width: 800px) {
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .site-header {
+        padding: 16px;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+}
