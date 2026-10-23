@@ -1,4 +1,6 @@
-window.CAMPUS_CONNECT_LISTINGS_ENDPOINT = null;
+// Listings now come from the database (api/listings.php).
+// The example array below is only used if this is set back to null.
+window.CAMPUS_CONNECT_LISTINGS_ENDPOINT = "api/listings.php";
 
 window.CampusConnectListings = [
     {
@@ -183,6 +185,7 @@ window.loadCampusConnectListings = async function () {
             area: String(item.area ?? ""),
             street: String(item.street ?? ""),
             type: String(item.type ?? ""),
+            types: Array.isArray(item.types) ? item.types : [String(item.type ?? "")],
             price: Number(item.price ?? 0),
             deposit: Number(item.deposit ?? 0),
             distanceKm: Number(item.distanceKm ?? item.distance_km ?? 0),

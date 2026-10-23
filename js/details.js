@@ -93,14 +93,16 @@ function displayDetails(property) {
     const rent = createElement("p", "cc-price", formatPrice(property.price));
     rent.appendChild(createElement("small", "", " / month"));
     bookingPanel.appendChild(rent);
-    bookingPanel.appendChild(createInfoRow("Deposit", formatPrice(property.deposit)));
+    if (property.deposit > 0) {
+        bookingPanel.appendChild(createInfoRow("Deposit", formatPrice(property.deposit)));
+    }
     bookingPanel.appendChild(createInfoRow("Available from", property.availableFrom || "Contact admin"));
     bookingPanel.appendChild(createInfoRow("Minimum stay", property.minimumStay || "Contact admin"));
     bookingPanel.appendChild(createInfoRow("Rooms left", String(property.roomsAvailable)));
 
     if (property.roomsAvailable > 0) {
         const bookLink = createElement("a", "cc-button", "Request to book");
-        bookLink.href = "../book.php?listing_id=" + encodeURIComponent(property.id);
+        bookLink.href = "book.php?listing_id=" + encodeURIComponent(property.id);
         bookingPanel.appendChild(bookLink);
         bookingPanel.appendChild(createElement("p", "cc-fineprint", "You will need to log in first. Booking is a request until approved."));
     } else {
