@@ -94,7 +94,8 @@ function getFilteredListings() {
         const matchesSearch = searchableText.includes(search);
         const matchesArea = area === "" || property.area === area;
         const matchesPrice = property.price >= minPrice && property.price <= maxPrice;
-        const matchesType = selectedTypes.includes(property.type);
+        // a property can have more than one room type (e.g. single and double rooms)
+        const matchesType = property.types.some(function (type) { return selectedTypes.includes(type); });
         const matchesAvailability = !availableInput.checked || property.roomsAvailable > 0;
 
         return matchesSearch && matchesArea && matchesPrice && matchesType && matchesAvailability;
@@ -129,7 +130,7 @@ function updateAddressBar() {
     }
 
     const types = getSelectedTypes();
-    if (types.length !== 3) {
+    if (types.length !== 2) {
         params.set("types", types.join(","));
     }
 
@@ -199,6 +200,17 @@ function displayListings() {
 
 function restoreFiltersFromURL() {
     const params = new URLSearchParams(window.location.search);
+
+    // The home page search form uses different names: location, max_price, room_type
+    if (params.has("location") && !params.has("area")) {
+        params.set("area", params.get("location"));
+    }
+    if (params.has("max_price") && !params.has("maxPrice")) {
+        params.set("maxPrice", params.get("max_price"));
+    }
+    if (params.get("room_type") && !params.has("types")) {
+        params.set("types", params.get("room_type") === "double" ? "Double room" : "Single room");
+    }
 
     for (const id of ["search", "area", "minPrice", "maxPrice"]) {
         if (params.has(id)) {

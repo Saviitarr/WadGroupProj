@@ -1,0 +1,7 @@
+Campus Connect - WAD621S Assessment 4 - Team members
+
+1. Frontend / UI Lead ................. Name: ______________________  Student no: __________
+2. Listings & Search Lead ............. Name: ______________________  Student no: __________
+3. Booking & Forms Lead ............... Name: Gavin ________________  Student no: __________
+4. Backend / Database Lead (Leader) ... Name: ______________________  Student no: __________
+5. Admin & Integration Lead ........... Name: ______________________  Student no: __________

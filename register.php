@@ -61,33 +61,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }// ← closes the "if POST" from Block 2
+$pageTitle = 'Create an account';
+$pageCss   = ['css/forms.css'];
+require 'includes/header.php';
 ?>
+<main class="m3 wrap page auth-page">
+    <div class="card auth-card auth-card-wide">
+        <h1>Create your account</h1>
+        <p class="lead">Sign up with your NUST student details to request rooms.</p>
 
-<!DOCTYPE html>
-<html lang="en">
+        <?php if ($errors): ?>
+            <div class="alert alert-error" role="alert">
+                <?php foreach ($errors as $err): ?>
+                    <p><?= e($err) ?></p>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
 
-<head>
-    <meta charset="UTF-8">
-    <title>Register</title>
-</head>
+        <form method="post" action="register.php" class="form js-validate" novalidate>
+            <div class="field">
+                <label for="full_name">Full name</label>
+                <input type="text" id="full_name" name="full_name" value="<?= e($old['full_name']) ?>" required
+                       maxlength="100" autocomplete="name" aria-describedby="full_name-error">
+                <p class="field-error" id="full_name-error" hidden></p>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="student_number">Student number</label>
+                    <input type="text" id="student_number" name="student_number" value="<?= e($old['student_number']) ?>"
+                           required inputmode="numeric" pattern="\d{9}" maxlength="9" aria-describedby="student_number-error">
+                    <p class="field-error" id="student_number-error" hidden></p>
+                </div>
+                <div class="field">
+                    <label for="phone">Phone <span class="optional">(optional)</span></label>
+                    <input type="tel" id="phone" name="phone" value="<?= e($old['phone']) ?>" maxlength="20" autocomplete="tel">
+                </div>
+            </div>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?= e($old['email']) ?>" required
+                       maxlength="150" autocomplete="email" aria-describedby="email-error">
+                <p class="field-error" id="email-error" hidden></p>
+            </div>
+            <div class="field-row">
+                <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required minlength="8"
+                           autocomplete="new-password" aria-describedby="password-hint password-error">
+                    <p class="hint" id="password-hint">At least 8 characters.</p>
+                    <p class="field-error" id="password-error" hidden></p>
+                </div>
+                <div class="field">
+                    <label for="confirm_password">Confirm password</label>
+                    <input type="password" id="confirm_password" name="confirm_password" required
+                           autocomplete="new-password" aria-describedby="confirm_password-error">
+                    <p class="field-error" id="confirm_password-error" hidden></p>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-block">Create account</button>
+        </form>
 
-<body>
-    <h1>Register</h1>
+        <p class="auth-switch">Already have an account? <a class="link" href="login.php">Log in</a></p>
+    </div>
+</main>
+<script src="js/auth-form.js"></script>
 
-    <?php foreach ($errors as $err): ?>
-        <p style="color:red"><?= e($err) ?></p>
-    <?php endforeach; ?>
-
-    <form method="post" action="register.php">
-        <label>Full name <input type="text" name="full_name" value="<?= e($old['full_name']) ?>"></label><br>
-        <label>Student number <input type="text" name="student_number"
-                value="<?= e($old['student_number']) ?>"></label><br>
-        <label>Email <input type="email" name="email" value="<?= e($old['email']) ?>"></label><br>
-        <label>Phone <input type="tel" name="phone" value="<?= e($old['phone']) ?>"></label><br>
-        <label>Password <input type="password" name="password"></label><br>
-        <label>Confirm password <input type="password" name="confirm_password"></label><br>
-        <button type="submit">Register</button>
-    </form>
-</body>
-
-</html>
+<?php require 'includes/footer.php'; ?>

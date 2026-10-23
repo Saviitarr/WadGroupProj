@@ -33,9 +33,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['role'] = $user['role'];
             $_SESSION['name'] = $user['full_name'];
+            $_SESSION['full_name'] = $user['full_name'];   // same value; the booking pages read this key
+
+            // Send them back to the page they were trying to open (e.g. book.php), if there was one.
+            // Only accept paths on this site ("/..."), never "//other-site.com" (open redirect).
+            $next = $_SESSION['after_login'] ?? '';
+            unset($_SESSION['after_login']);
 
             if ($user['role'] === 'admin') {
                 header('Location: admin/index.php');
+            } elseif ($next !== '' && $next[0] === '/' && substr($next, 0, 2) !== '//') {
+                header('Location: ' . $next);
             } else {
                 header('Location: dashboard.php');
             }
@@ -46,39 +54,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Incorrect email or password. Please try again.';
     }
 }
+
+$pageTitle = 'Log in';
+$pageCss   = ['css/forms.css'];
+require 'includes/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Log in – Campus Connect</title>
-</head>
-
-<body>
-    <main class="auth-card">
-        <h1>Welcome back to Campus Connect</h1>
+<main class="m3 wrap page auth-page">
+    <div class="card auth-card">
+        <h1>Welcome back</h1>
+        <p class="lead">Log in to book rooms and see your requests.</p>
 
         <?php if (isset($_GET['registered'])): ?>
-            <p class="alert alert-success">Account created – please log in.</p>
+            <div class="alert alert-success" role="status">Account created – please log in.</div>
         <?php endif; ?>
 
         <?php if ($error): ?>
-            <p class="alert alert-error"><?= e($error) ?></p>
+            <div class="alert alert-error" role="alert"><?= e($error) ?></div>
         <?php endif; ?>
 
-        <form method="post" action="login.php">
-            <label>Email <input type="email" name="email" value="<?= e($email) ?>" required></label><br>
-            <label>Password <input type="password" name="password" required></label><br>
-            <button type="submit">Continue</button>
+        <form method="post" action="login.php" class="form js-validate" novalidate>
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="<?= e($email) ?>" required autocomplete="email"
+                       aria-describedby="email-error">
+                <p class="field-error" id="email-error" hidden></p>
+            </div>
+            <div class="field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password"
+                       aria-describedby="password-error">
+                <p class="field-error" id="password-error" hidden></p>
+            </div>
+            <button type="submit" class="btn btn-block">Continue</button>
         </form>
 
-        <p>or</p>
-        <a href="register.php">Create a student account</a>
-        <p>Admins log in here too and are taken to the admin area.</p>
-    </main>
-</body>
+        <p class="auth-switch">New here? <a class="link" href="register.php">Create a student account</a></p>
+        <p class="muted small">Admins log in here too and are taken to the admin area.</p>
+    </div>
+</main>
+<script src="js/auth-form.js"></script>
 
-</html>
+<?php require 'includes/footer.php'; ?>
