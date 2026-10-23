@@ -179,10 +179,12 @@ button.link { background: none; border: 0; padding: 0; font: inherit; font-weigh
 .stat-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .stat { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; display: flex; flex-direction: column; gap: 2px; color: var(--muted); font-size: 14px; }
 .stat-num { font-size: 30px; font-weight: 700; color: var(--ink); line-height: 1.1; }
-.stat-pending { border-top: 4px solid #E9B949; }
-.stat-approved { border-top: 4px solid #3E9A5F; }
-.stat-closed { border-top: 4px solid #B5ADA5; }
-.stat:first-child { border-top: 4px solid var(--red); }
+/* Accent cards are filled with a solid colour (the number and label switch colour to stay readable) */
+.stat-pending { background: #E9B949; border-color: #E9B949; color: var(--ink); }
+.stat-approved { background: #3E9A5F; border-color: #3E9A5F; color: #fff; }
+.stat-closed { background: #B5ADA5; border-color: #B5ADA5; color: var(--ink); }
+.stat:first-child { background: var(--red); border-color: var(--red); color: #fff; }
+.stat-approved .stat-num, .stat:first-child .stat-num { color: #fff; }
 
 .next-stay { background: linear-gradient(135deg, var(--red), #A81C30); color: #fff; border: 0; }
 .next-stay .eyebrow { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; font-weight: 700; opacity: 0.85; margin-bottom: 6px; }
