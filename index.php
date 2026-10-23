@@ -1,4 +1,3 @@
-
 <?php
 $pageTitle = "Home";
 
@@ -65,40 +64,43 @@ require "includes/header.php";
 
 
 <?php
-$featuredListings = [
-    [
-        "name" => "Windhoek West Studios",
-        "distance" => "0.9 km",
-        "type" => "Single",
-        "features" => "Furnished · Wi-Fi",
-        "price" => 4500,
-        "badge" => "Closest to campus"
-    ],
-    [
-        "name" => "Pioneerspark Student House",
-        "distance" => "1.8 km",
-        "type" => "Double",
-        "features" => "Shared kitchen · Wi-Fi",
-        "price" => 2800,
-        "badge" => ""
-    ],
-    [
-        "name" => "Eros Garden Rooms",
-        "distance" => "3.2 km",
-        "type" => "Single",
-        "features" => "Garden · Parking",
-        "price" => 3600,
-        "badge" => ""
-    ],
-    [
-        "name" => "Hochland Park Residence",
-        "distance" => "3.8 km",
-        "type" => "Single",
-        "features" => "Laundry · Wi-Fi",
-        "price" => 3200,
-        "badge" => "1 room left"
-    ]
-];
+// Featured listings now come from the database: the 4 properties closest to campus.
+// Each row is turned into the same keys the cards below already use.
+$featuredRows = $pdo->query(
+    "SELECT p.id, p.name, p.distance_to_campus_km, p.has_wifi, p.has_parking,
+            MIN(r.price_per_month) AS price,
+            SUM(r.is_available)    AS rooms_left,
+            GROUP_CONCAT(DISTINCT r.room_type ORDER BY r.room_type) AS types
+       FROM properties p
+       JOIN rooms r ON r.property_id = p.id
+      GROUP BY p.id
+      ORDER BY p.distance_to_campus_km
+      LIMIT 4"
+)->fetchAll();
+
+$featuredListings = [];
+foreach ($featuredRows as $i => $row) {
+    $features = [];
+    if ($row["has_wifi"]) { $features[] = "Wi-Fi"; }
+    if ($row["has_parking"]) { $features[] = "Parking"; }
+
+    $badge = "";
+    if ($i === 0) {
+        $badge = "Closest to campus";
+    } elseif ((int) $row["rooms_left"] === 1) {
+        $badge = "1 room left";
+    }
+
+    $featuredListings[] = [
+        "id" => (int) $row["id"],
+        "name" => $row["name"],
+        "distance" => rtrim(rtrim(number_format($row["distance_to_campus_km"], 1), "0"), ".") . " km",
+        "type" => ucwords(str_replace(",", " & ", $row["types"])),
+        "features" => $features ? implode(" · ", $features) : "Student rooms",
+        "price" => (float) $row["price"],
+        "badge" => $badge
+    ];
+}
 ?>
 
 <section class="featured-section">
@@ -114,7 +116,7 @@ $featuredListings = [
 
             <article class="listing-card">
 
-                <a href="listings.php" class="listing-card-link">
+                <a href="listing-details.php?id=<?php echo (int) $listing["id"]; ?>" class="listing-card-link">
 
                     <div class="listing-image">
 

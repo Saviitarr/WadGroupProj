@@ -1,52 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Browse Windhoek Rooms | Campus Connect
-  </title>
-  <link href="css/listings.css" rel="stylesheet"/>
-  <script defer="" src="js/data.js">
-  </script>
-  <script defer="" src="js/listings.js">
-  </script>
- </head>
- <body class="cc-part2">
-  <header class="cc-header">
-   <div class="cc-wrap cc-header-inner">
-    <a class="cc-brand" href="../index.php">
-     ⌂ Campus Connect
-    </a>
-    <nav aria-label="Main navigation">
-     <a href="../index.php">
-      Home
-     </a>
-     <a aria-current="page" href="listings.php">
-      Browse rooms
-     </a>
-     <a href="../about.php">
-      About
-     </a>
-     <a href="../contact.php">
-      Contact
-     </a>
-     <a href="../login.php">
-      Log in
-     </a>
-     <a class="cc-nav-action" href="../register.php">
-      Sign up
-     </a>
-    </nav>
-   </div>
-  </header>
-  <main class="cc-wrap">
+<?php
+// listings.php - Member 2's page, now using the shared header/footer.
+// The page content is wrapped in .cc-part2 so Member 2's listings.css styles still apply.
+$pageTitle = 'Browse Windhoek rooms';
+$pageCss   = ['css/listings.css'];
+require __DIR__ . '/includes/header.php';
+?>
+<div class="cc-part2">
+<main class="cc-wrap">
    <div class="cc-page-heading">
     <h1>
      Find your place near NUST
     </h1>
     <p>
-     Browse student accommodation in Windhoek. Example listings until the database is connected.
+     Browse student accommodation in Windhoek.
     </p>
    </div>
    <div class="cc-listings-layout">
@@ -100,12 +66,8 @@
          Single
         </label>
         <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Shared room"/>
-         Shared
-        </label>
-        <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Studio"/>
-         Studio
+         <input checked="" name="roomType" type="checkbox" value="Double room"/>
+         Double
         </label>
        </div>
       </fieldset>
@@ -193,14 +155,8 @@
     </div>
    </div>
   </main>
-  <footer class="cc-footer">
-   <div class="cc-wrap">
-    &copy; 2026 Campus Connect &middot; WAD621S Group Project
-    <a href="../contact.php">
-     Contact
-    </a>
-   </div>
-  </footer>
- </body>
-</html>
+</div>
+<script src="js/data.js"></script>
+<script src="js/listings.js"></script>
 
+<?php require __DIR__ . '/includes/footer.php'; ?>
