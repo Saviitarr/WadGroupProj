@@ -61,69 +61,220 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }// ← closes the "if POST" from Block 2
-$pageTitle = 'Create an account';
-$pageCss   = ['css/forms.css'];
-require 'includes/header.php';
 ?>
-<main class="m3 wrap page auth-page">
-    <div class="card auth-card auth-card-wide">
-        <h1>Create your account</h1>
-        <p class="lead">Sign up with your NUST student details to request rooms.</p>
 
-        <?php if ($errors): ?>
-            <div class="alert alert-error" role="alert">
-                <?php foreach ($errors as $err): ?>
-                    <p><?= e($err) ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
 
-        <form method="post" action="register.php" class="form js-validate" novalidate>
-            <div class="field">
-                <label for="full_name">Full name</label>
-                <input type="text" id="full_name" name="full_name" value="<?= e($old['full_name']) ?>" required
-                       maxlength="100" autocomplete="name" aria-describedby="full_name-error">
-                <p class="field-error" id="full_name-error" hidden></p>
-            </div>
-            <div class="field-row">
-                <div class="field">
-                    <label for="student_number">Student number</label>
-                    <input type="text" id="student_number" name="student_number" value="<?= e($old['student_number']) ?>"
-                           required inputmode="numeric" pattern="\d{9}" maxlength="9" aria-describedby="student_number-error">
-                    <p class="field-error" id="student_number-error" hidden></p>
-                </div>
-                <div class="field">
-                    <label for="phone">Phone <span class="optional">(optional)</span></label>
-                    <input type="tel" id="phone" name="phone" value="<?= e($old['phone']) ?>" maxlength="20" autocomplete="tel">
-                </div>
-            </div>
-            <div class="field">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="<?= e($old['email']) ?>" required
-                       maxlength="150" autocomplete="email" aria-describedby="email-error">
-                <p class="field-error" id="email-error" hidden></p>
-            </div>
-            <div class="field-row">
-                <div class="field">
-                    <label for="password">Password</label>
-                    <input type="password" id="password" name="password" required minlength="8"
-                           autocomplete="new-password" aria-describedby="password-hint password-error">
-                    <p class="hint" id="password-hint">At least 8 characters.</p>
-                    <p class="field-error" id="password-error" hidden></p>
-                </div>
-                <div class="field">
-                    <label for="confirm_password">Confirm password</label>
-                    <input type="password" id="confirm_password" name="confirm_password" required
-                           autocomplete="new-password" aria-describedby="confirm_password-error">
-                    <p class="field-error" id="confirm_password-error" hidden></p>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-block">Create account</button>
-        </form>
+<!DOCTYPE html>
+<html lang="en">
 
-        <p class="auth-switch">Already have an account? <a class="link" href="login.php">Log in</a></p>
-    </div>
-</main>
-<script src="js/auth-form.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<?php require 'includes/footer.php'; ?>
+    <title>Register | Campus Connect</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-page">
+
+    <header class="auth-header">
+
+        <a href="index.php" class="auth-logo">
+            <span class="logo-icon">CC</span>
+            <span>Campus Connect</span>
+        </a>
+
+        <p class="register-login-link">
+            Have an account? <a href="login.php">Log in</a>
+        </p>
+
+    </header>
+
+    <main class="auth-main register-main">
+
+        <div class="auth-card register-card">
+
+            <div class="auth-card-header">
+                Sign up
+            </div>
+
+            <div class="auth-card-content">
+
+                <h1>Create your student account</h1>
+
+                <p class="register-description">
+                    Use your NUST student email so we can confirm
+                    you're a student.
+                </p>
+
+                <!-- Server-side errors -->
+                <?php if (!empty($errors)): ?>
+                    <div class="auth-error" role="alert">
+
+                        <?php foreach ($errors as $err): ?>
+                            <p><?php echo e($err); ?></p>
+                        <?php endforeach; ?>
+
+                    </div>
+                <?php endif; ?>
+
+                <!-- JavaScript errors -->
+                <div id="register-error" class="auth-error"
+                     role="alert" hidden></div>
+
+                <form id="register-form" method="POST"
+                        action="register.php" novalidate>
+
+                    <div class="auth-field">
+                        <label for="full-name">Full name</label>
+
+                        <input
+                            type="text"
+                            id="full-name"
+                            name="full_name"
+                            placeholder="Enter your full name"
+                            value="<?php echo e($old['full_name']); ?>"
+                            autocomplete="name"
+                            required
+                        >
+                    </div>
+
+                    <div class="register-field-row">
+
+                        <div class="auth-field">
+                            <label for="student-number">
+                                Student number
+                            </label>
+
+                            <input
+                                type="text"
+                                id="student-number"
+                                name="student_number"
+                                placeholder="9-digit number"
+                                value="<?php echo e($old['student_number']); ?>"
+                                maxlength="9"
+                                inputmode="numeric"
+                                required
+                            >
+                        </div>
+
+                        <div class="auth-field">
+                            <label for="register-phone">Phone</label>
+
+                            <input
+                                type="tel"
+                                id="register-phone"
+                                name="phone"
+                                placeholder="+264..."
+                                value="<?php echo e($old['phone']); ?>"
+                                autocomplete="tel"
+                            >
+                        </div>
+
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="register-email">
+                            Student email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="register-email"
+                            name="email"
+                            placeholder="name@students.nust.na"
+                            value="<?php echo e($old['email']); ?>"
+                            autocomplete="email"
+                            required
+                        >
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="register-password">Password</label>
+
+                        <div class="password-container">
+
+                            <input
+                                type="password"
+                                id="register-password"
+                                name="password"
+                                placeholder="Create a password"
+                                autocomplete="new-password"
+                                minlength="8"
+                                required
+                            >
+
+                            <button type="button"
+                                    class="show-password"
+                                    id="show-register-password">
+                                Show
+                            </button>
+
+                        </div>
+
+                        <p class="password-hint">
+                            Password must contain at least 8 characters.
+                        </p>
+                    </div>
+
+                    <div class="auth-field">
+                        <label for="confirm-password">
+                            Confirm password
+                        </label>
+
+                        <div class="password-container">
+
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                name="confirm_password"
+                                placeholder="Confirm your password"
+                                autocomplete="new-password"
+                                required
+                            >
+
+                            <button type="button"
+                                    class="show-password"
+                                    id="show-confirm-password">
+                                Show
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="register-terms">
+
+                        <input type="checkbox"
+                               id="register-agreement"
+                               name="accept_terms"
+                               value="1"
+                               required>
+
+                        <label for="register-agreement">
+                            I agree to the terms of use and
+                            confirm that my details are correct.
+                        </label>
+
+                    </div>
+
+                    <button type="submit" class="auth-submit">
+                        Agree and continue
+                    </button>
+
+                </form>
+
+                <p class="auth-note">
+                    Admin accounts are created by the system administrator.
+                </p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="js/script.js"></script>
+
+</body>
+</html>
