@@ -152,55 +152,6 @@ require "includes/header.php";
 
     </section>
 
-    <!-- Team members -->
-    <section class="about-team-section">
-
-        <div class="about-container">
-
-            <h2>Meet the team</h2>
-
-            <p class="team-description">
-                Five NUST students, built for WAD621S
-                Web Application Development.
-            </p>
-
-            <?php
-            $teamMembers = [
-                ["member" => "M1", "role" => "Frontend & UI"],
-                ["member" => "M2", "role" => "Listings & Search"],
-                ["member" => "M3", "role" => "Booking & Forms"],
-                ["member" => "M4", "role" => "Backend & Database"],
-                ["member" => "M5", "role" => "Admin & Integration"]
-            ];
-            ?>
-
-            <div class="team-grid">
-
-                <?php foreach ($teamMembers as $member): ?>
-
-                    <div class="team-card">
-
-                        <div class="team-avatar">
-                            <?php echo htmlspecialchars($member["member"]); ?>
-                        </div>
-
-                        <h3>
-                            <?php echo htmlspecialchars($member["member"]); ?>
-                        </h3>
-
-                        <p>
-                            <?php echo htmlspecialchars($member["role"]); ?>
-                        </p>
-
-                    </div>
-
-                <?php endforeach; ?>
-
-            </div>
-
-        </div>
-
-    </section>
 
 </main>
 

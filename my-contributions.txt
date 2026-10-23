@@ -1,0 +1,76 @@
+Campus Connect - WAD621S Group Assignment 2026
+Contribution summary - Backend / Database Lead
+
+======================================================================
+1. DATABASE
+======================================================================
+- Designed and wrote database/schema.sql: 7 related tables
+    users, properties, rooms, property_images, bookings, reviews, contact
+- Relationships (foreign keys):
+    properties 1 - many rooms             (ON DELETE CASCADE)
+    properties 1 - many property_images   (ON DELETE CASCADE)
+    properties 1 - many reviews           (ON DELETE CASCADE)
+    users      1 - many bookings          (ON DELETE CASCADE)
+    users      1 - many reviews           (ON DELETE CASCADE)
+    rooms      1 - many bookings          (ON DELETE RESTRICT - keeps booking history)
+    contact has no foreign key, so visitors can send messages without an account
+- Constraints as a safety net:
+    UNIQUE email, UNIQUE student_number, UNIQUE (property_id, room_number)
+    CHECK distance >= 0, capacity > 0, price >= 0, rating 1-5, end_date > start_date
+    ENUMs for room_type, booking status and user role; role defaults to 'student'
+- Wrote database/seed.sql: 1 admin, 3 students, 4 Windhoek properties,
+  8 rooms, 4 bookings in different statuses, 3 reviews, 1 contact message
+
+======================================================================
+2. CORE BACKEND
+======================================================================
+- config/db.php: PDO database connection (exceptions on errors,
+  rows returned as associative arrays)
+- include/auth.php (original version): session start, e() output escaping,
+  is_logged_in(), require_login(), require_admin()
+- register.php (original version): server-side validation (name, 9-digit
+  student number, email, password length, matching passwords), duplicate
+  check, password_hash(), Post/Redirect/Get
+- login.php (original version): password_verify(), session_regenerate_id(),
+  same error for wrong email or password, role-based redirect
+- logout.php: clears and destroys the session
+
+======================================================================
+3. ADMIN AREA
+======================================================================
+- admin/index.php: overview with live counts (students, rooms,
+  pending bookings, messages)
+- admin/bookings.php: all bookings with student and room details,
+  Approve / Reject; re-checks room capacity for overlapping approved
+  bookings before approving, so a room can't be double-booked
+- admin/rooms.php: list and delete rooms; deleting a room with bookings
+  is blocked by the database (RESTRICT) and shows a friendly message
+- admin/room-form.php: one form for adding and editing rooms, with
+  server-side validation and a duplicate room-number check
+- admin/messages.php: contact messages, all output escaped (stored XSS)
+- include/admin_nav.php: shared admin tab bar
+- Admin pages use the shared site header/footer and the team's admin
+  styles so they match the rest of the site
+
+======================================================================
+4. FIXES AND IMPROVEMENTS
+======================================================================
+- listings.php: fixed the room-type filter (duplicated checkboxes and
+  broken HTML)
+- index.php: the home page "Where" dropdown loads areas from the
+  database instead of a fixed list
+- css/forms.css: dashboard stat cards use solid colours
+
+======================================================================
+5. SECURITY MEASURES IN MY CODE
+======================================================================
+- Prepared statements for every query with user input (SQL injection)
+- password_hash() / password_verify(), never storing plain passwords
+- e() / htmlspecialchars on all output (XSS)
+- require_login() / require_admin() checked on the server on every
+  protected page - hiding links is not security
+- session_regenerate_id() on login (session fixation)
+- Server-side validation on every form (JavaScript can be bypassed)
+- Role set by the database default, so users can't register as admin
+- POST for every action that changes data; exit after every redirect
+- Database constraints (UNIQUE, CHECK, foreign keys) as a last line of defence

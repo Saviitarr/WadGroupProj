@@ -12,7 +12,12 @@ $properties = $pdo->query(
             p.has_wifi, p.has_parking,
             MIN(r.price_per_month)                    AS min_price,
             COUNT(r.id)                               AS room_count,
-            COALESCE(SUM(r.is_available), 0)          AS rooms_available,
+            -- A room is free when the admin has it switched on AND its approved bookings
+            -- that haven't ended yet don't fill its capacity
+            COALESCE(SUM(r.is_available = 1 AND (
+                SELECT COUNT(*) FROM bookings b
+                 WHERE b.room_id = r.id AND b.status = 'approved' AND b.end_date >= CURDATE()
+            ) < r.capacity), 0)                       AS rooms_available,
             COALESCE(SUM(r.capacity), 0)              AS beds,
             GROUP_CONCAT(DISTINCT r.room_type)        AS room_types
        FROM properties p
