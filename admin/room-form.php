@@ -98,65 +98,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 }
+
+$pageTitle = ($editing ? 'Edit room' : 'Add room') . ' – Admin';
+$pageCss = ['css/forms.css'];
+require '../includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= $editing ? 'Edit room' : 'Add room' ?> – Admin – Campus Connect</title>
-</head>
-
-<body>
+<main class="m3 wrap page">
     <?php require '../include/admin_nav.php'; ?>
 
-    <main>
-        <h1><?= $editing ? 'Edit room' : 'Add a room' ?></h1>
+    <p class="breadcrumb"><a href="rooms.php">Rooms</a> / <?= $editing ? 'Edit room' : 'Add a room' ?></p>
+    <h1><?= $editing ? 'Edit room' : 'Add a room' ?></h1>
+    <p class="lead"><?= $editing ? 'Change the details and save.' : 'New rooms appear on the listings page as soon as they are saved.' ?></p>
 
-        <?php foreach ($errors as $err): ?>
-            <p class="alert alert-error"><?= e($err) ?></p>
-        <?php endforeach; ?>
+    <?php if ($errors): ?>
+        <div class="alert alert-error">
+            <?php foreach ($errors as $err): ?>
+                <p><?= e($err) ?></p>
+            <?php endforeach; ?>
+        </div>
+    <?php endif; ?>
 
-        <form method="post" action="room-form.php<?= $editing ? '?id=' . $id : '' ?>">
-            <label>Property
-                <select name="property_id" required>
+    <form class="card form admin-form" method="post" action="room-form.php<?= $editing ? '?id=' . $id : '' ?>">
+        <div class="field-row">
+            <div class="field">
+                <label for="property_id">Property</label>
+                <select id="property_id" name="property_id" required>
                     <option value="">Choose…</option>
                     <?php foreach ($properties as $pid => $pname): ?>
                         <option value="<?= $pid ?>" <?= $pid == $room['property_id'] ? 'selected' : '' ?>><?= e($pname) ?></option>
                     <?php endforeach; ?>
                 </select>
-            </label><br>
+            </div>
+            <div class="field">
+                <label for="room_number">Room number</label>
+                <input type="text" id="room_number" name="room_number" value="<?= e($room['room_number']) ?>" maxlength="20" required>
+            </div>
+        </div>
 
-            <label>Room number
-                <input type="text" name="room_number" value="<?= e($room['room_number']) ?>" maxlength="20" required>
-            </label><br>
-
-            <label>Type
-                <select name="room_type">
+        <div class="field-row field-row-3">
+            <div class="field">
+                <label for="room_type">Type</label>
+                <select id="room_type" name="room_type">
                     <option value="single" <?= $room['room_type'] === 'single' ? 'selected' : '' ?>>Single</option>
                     <option value="double" <?= $room['room_type'] === 'double' ? 'selected' : '' ?>>Double (shared)</option>
                 </select>
-            </label><br>
+            </div>
+            <div class="field">
+                <label for="price_per_month">Rent per month (N$)</label>
+                <input type="number" id="price_per_month" name="price_per_month" value="<?= e($room['price_per_month']) ?>" min="0" step="0.01" required>
+            </div>
+            <div class="field">
+                <label for="capacity">Capacity</label>
+                <input type="number" id="capacity" name="capacity" value="<?= e($room['capacity']) ?>" min="1" max="10" required>
+            </div>
+        </div>
 
-            <label>Capacity
-                <input type="number" name="capacity" value="<?= e($room['capacity']) ?>" min="1" max="10" required>
-            </label><br>
-
-            <label>Rent per month (N$)
-                <input type="number" name="price_per_month" value="<?= e($room['price_per_month']) ?>" min="0" step="0.01" required>
-            </label><br>
-
-            <label>
+        <div class="check-row">
+            <label class="check">
                 <input type="checkbox" name="is_available" value="1" <?= $room['is_available'] ? 'checked' : '' ?>>
                 Available for booking
-            </label><br>
+            </label>
+        </div>
 
-            <button type="submit"><?= $editing ? 'Save changes' : 'Add room' ?></button>
-            <a href="rooms.php">Cancel</a>
-        </form>
-    </main>
-</body>
+        <div class="form-actions">
+            <a class="link link-muted" href="rooms.php">Cancel</a>
+            <button class="btn" type="submit"><?= $editing ? 'Save changes' : 'Add room' ?></button>
+        </div>
+    </form>
+</main>
 
-</html>
+<?php require '../includes/footer.php'; ?>

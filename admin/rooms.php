@@ -24,10 +24,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $notices = [
-    'added' => 'Room added.',
-    'updated' => 'Room updated.',
-    'deleted' => 'Room deleted.',
-    'has_bookings' => 'This room has bookings, so it can\'t be deleted. Edit it and untick "Available" instead.',
+    'added' => ['success', 'Room added.'],
+    'updated' => ['success', 'Room updated.'],
+    'deleted' => ['success', 'Room deleted.'],
+    'has_bookings' => ['error', 'This room has bookings, so it can\'t be deleted. Edit it and untick "Available" instead.'],
 ];
 $notice = $notices[$_GET['msg'] ?? ''] ?? null;
 
@@ -38,62 +38,65 @@ $rooms = $pdo->query(
      JOIN properties p ON p.id = r.property_id
      ORDER BY p.name, r.room_number'
 )->fetchAll();
+
+$pageTitle = 'Rooms – Admin';
+$pageCss = ['css/forms.css'];
+require '../includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rooms – Admin – Campus Connect</title>
-</head>
-
-<body>
+<main class="m3 wrap page">
     <?php require '../include/admin_nav.php'; ?>
 
-    <main>
-        <h1>Rooms</h1>
-        <p><a href="room-form.php">+ Add a room</a></p>
+    <div class="dash-head">
+        <div>
+            <h1>Rooms</h1>
+            <p class="lead">Add, edit or remove rooms. Changes show on the listings straight away.</p>
+        </div>
+        <a class="btn" href="room-form.php">+ Add a room</a>
+    </div>
 
-        <?php if ($notice): ?>
-            <p class="alert"><?= e($notice) ?></p>
-        <?php endif; ?>
+    <?php if ($notice): ?>
+        <p class="alert alert-<?= $notice[0] ?>"><?= e($notice[1]) ?></p>
+    <?php endif; ?>
 
-        <table>
+    <div class="card">
+        <table class="data-table">
             <thead>
                 <tr>
-                    <th>Property</th>
                     <th>Room</th>
                     <th>Type</th>
                     <th>Capacity</th>
                     <th>Rent / month</th>
                     <th>Available</th>
-                    <th></th>
+                    <th><span class="sr-only">Actions</span></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($rooms as $r): ?>
                     <tr>
-                        <td><?= e($r['property_name']) ?></td>
-                        <td><?= e($r['room_number']) ?></td>
-                        <td><?= e(ucfirst($r['room_type'])) ?></td>
-                        <td><?= $r['capacity'] ?></td>
-                        <td>N$<?= number_format($r['price_per_month'], 2) ?></td>
-                        <td><?= $r['is_available'] ? 'Yes' : 'No' ?></td>
                         <td>
-                            <a href="room-form.php?id=<?= $r['id'] ?>">Edit</a>
-                            <form method="post" action="rooms.php"
+                            <strong><?= e($r['property_name']) ?></strong>
+                            <span class="muted block">Room <?= e($r['room_number']) ?></span>
+                        </td>
+                        <td data-label="Type"><?= e(ucfirst($r['room_type'])) ?></td>
+                        <td data-label="Capacity"><?= $r['capacity'] ?></td>
+                        <td data-label="Rent / month">N$<?= number_format($r['price_per_month'], 2) ?></td>
+                        <td data-label="Available">
+                            <span class="badge badge-<?= $r['is_available'] ? 'approved' : 'cancelled' ?>"><?= $r['is_available'] ? 'Yes' : 'No' ?></span>
+                        </td>
+                        <td class="actions">
+                            <a class="btn btn-small btn-ghost" href="room-form.php?id=<?= $r['id'] ?>">Edit</a>
+                            <form class="inline-form" method="post" action="rooms.php"
                                 onsubmit="return confirm('Delete this room?');">
                                 <input type="hidden" name="room_id" value="<?= $r['id'] ?>">
-                                <button type="submit">Delete</button>
+                                <button class="btn btn-small" type="submit">Delete</button>
                             </form>
                         </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-    </main>
-</body>
+    </div>
+</main>
 
-</html>
+<?php require '../includes/footer.php'; ?>

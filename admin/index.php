@@ -5,38 +5,42 @@ require_admin();
 // No user input in these queries, so plain query() is fine (nothing to inject)
 $counts = [
     'Students' => $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'student'")->fetchColumn(),
-    'Properties' => $pdo->query('SELECT COUNT(*) FROM properties')->fetchColumn(),
     'Rooms' => $pdo->query('SELECT COUNT(*) FROM rooms')->fetchColumn(),
     'Pending bookings' => $pdo->query("SELECT COUNT(*) FROM bookings WHERE status = 'pending'")->fetchColumn(),
     'Messages' => $pdo->query('SELECT COUNT(*) FROM contact')->fetchColumn(),
 ];
+
+$pageTitle = 'Admin';
+$pageCss = ['css/forms.css'];
+require '../includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin – Campus Connect</title>
-</head>
-
-<body>
+<main class="m3 wrap page">
     <?php require '../include/admin_nav.php'; ?>
 
-    <main>
-        <h1>Welcome, <?= e($_SESSION['name']) ?></h1>
+    <h1>Welcome, <?= e($_SESSION['name']) ?></h1>
+    <p class="lead">Here's what's happening on Campus Connect.</p>
 
-        <ul class="admin-stats">
-            <?php foreach ($counts as $label => $number): ?>
-                <li><strong><?= $number ?></strong> <?= e($label) ?></li>
-            <?php endforeach; ?>
-        </ul>
+    <ul class="stat-grid">
+        <?php foreach ($counts as $label => $number): ?>
+            <li class="stat<?= $label === 'Pending bookings' ? ' stat-pending' : '' ?>">
+                <span class="stat-num"><?= $number ?></span>
+                <?= e($label) ?>
+            </li>
+        <?php endforeach; ?>
+    </ul>
 
+    <div class="card" style="margin-top: 20px">
         <?php if ($counts['Pending bookings'] > 0): ?>
-            <p><a href="bookings.php">Review <?= $counts['Pending bookings'] ?> pending booking(s)</a></p>
+            <h2><?= $counts['Pending bookings'] ?> booking request(s) waiting</h2>
+            <p class="muted">Approve or reject them so students know where they stand.</p>
+            <a class="btn" href="bookings.php">Review bookings</a>
+        <?php else: ?>
+            <h2>All caught up</h2>
+            <p class="muted">There are no pending booking requests.</p>
+            <a class="btn btn-ghost" href="rooms.php">Manage rooms</a>
         <?php endif; ?>
-    </main>
-</body>
+    </div>
+</main>
 
-</html>
+<?php require '../includes/footer.php'; ?>

@@ -47,10 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Messages are picked from this list, so nothing from the URL is ever printed
 $notices = [
-    'approved' => 'Booking approved.',
-    'rejected' => 'Booking rejected.',
-    'full' => 'Cannot approve: the room is already full for those dates.',
-    'invalid' => 'That booking can no longer be changed.',
+    'approved' => ['success', 'Booking approved.'],
+    'rejected' => ['success', 'Booking rejected.'],
+    'full' => ['error', 'Cannot approve: the room is already full for those dates.'],
+    'invalid' => ['error', 'That booking can no longer be changed.'],
 ];
 $notice = $notices[$_GET['msg'] ?? ''] ?? null;
 
@@ -65,65 +65,66 @@ $bookings = $pdo->query(
      JOIN properties p ON p.id = r.property_id
      ORDER BY b.status = 'pending' DESC, b.created_at DESC"
 )->fetchAll();
+
+$pageTitle = 'Bookings – Admin';
+$pageCss = ['css/forms.css'];
+require '../includes/header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bookings – Admin – Campus Connect</title>
-</head>
-
-<body>
+<main class="m3 wrap page">
     <?php require '../include/admin_nav.php'; ?>
 
-    <main>
-        <h1>Bookings</h1>
+    <h1>Bookings</h1>
+    <p class="lead">Approve or reject booking requests. Pending requests are listed first.</p>
 
-        <?php if ($notice): ?>
-            <p class="alert"><?= e($notice) ?></p>
-        <?php endif; ?>
+    <?php if ($notice): ?>
+        <p class="alert alert-<?= $notice[0] ?>"><?= e($notice[1]) ?></p>
+    <?php endif; ?>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Student</th>
-                    <th>Room</th>
-                    <th>Move in</th>
-                    <th>Move out</th>
-                    <th>Notes</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($bookings as $b): ?>
+    <div class="card">
+        <?php if (!$bookings): ?>
+            <p class="empty muted">No bookings yet.</p>
+        <?php else: ?>
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td>
-                            <?= e($b['full_name']) ?><br>
-                            <small><?= e($b['student_number']) ?> · <?= e($b['email']) ?></small>
-                        </td>
-                        <td><?= e($b['property_name']) ?> – Room <?= e($b['room_number']) ?></td>
-                        <td><?= e($b['start_date']) ?></td>
-                        <td><?= e($b['end_date']) ?></td>
-                        <td><?= e($b['notes']) ?></td>
-                        <td><span class="status status-<?= e($b['status']) ?>"><?= e(ucfirst($b['status'])) ?></span></td>
-                        <td>
-                            <?php if ($b['status'] === 'pending'): ?>
-                                <form method="post" action="bookings.php">
-                                    <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
-                                    <button type="submit" name="action" value="approve">Approve</button>
-                                    <button type="submit" name="action" value="reject">Reject</button>
-                                </form>
-                            <?php endif; ?>
-                        </td>
+                        <th>Student</th>
+                        <th>Room</th>
+                        <th>Move in</th>
+                        <th>Move out</th>
+                        <th>Status</th>
+                        <th><span class="sr-only">Actions</span></th>
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-    </main>
-</body>
+                </thead>
+                <tbody>
+                    <?php foreach ($bookings as $b): ?>
+                        <tr>
+                            <td>
+                                <strong><?= e($b['full_name']) ?></strong>
+                                <span class="muted block"><?= e($b['student_number']) ?> · <?= e($b['email']) ?></span>
+                                <?php if ($b['notes']): ?>
+                                    <span class="note block">“<?= e($b['notes']) ?>”</span>
+                                <?php endif; ?>
+                            </td>
+                            <td data-label="Room"><?= e($b['property_name']) ?> – Room <?= e($b['room_number']) ?></td>
+                            <td data-label="Move in"><?= e($b['start_date']) ?></td>
+                            <td data-label="Move out"><?= e($b['end_date']) ?></td>
+                            <td data-label="Status"><span class="badge badge-<?= e($b['status']) ?>"><?= e(ucfirst($b['status'])) ?></span></td>
+                            <td class="actions">
+                                <?php if ($b['status'] === 'pending'): ?>
+                                    <form class="inline-form" method="post" action="bookings.php">
+                                        <input type="hidden" name="booking_id" value="<?= $b['id'] ?>">
+                                        <button class="btn btn-small" type="submit" name="action" value="approve">Approve</button>
+                                        <button class="btn btn-small btn-ghost" type="submit" name="action" value="reject">Reject</button>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+    </div>
+</main>
 
-</html>
+<?php require '../includes/footer.php'; ?>
