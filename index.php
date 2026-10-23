@@ -17,27 +17,23 @@ require "includes/header.php";
             Browse available rooms and request a booking.
         </p>
 
-        <form class="search-bar" action="listings.php" method="GET">
+        <form class="search-bar" action="listingandshi/listings.php" method="GET">
 
             <div class="search-field">
                 <label for="location">Where</label>
-                <select id="location" name="location">
+                <select id="location" name="area">
                     <option value="">Anywhere near NUST</option>
                     <option value="Windhoek West">Windhoek West</option>
-                    <option value="Pioneerspark">Pioneerspark</option>
+                    <option value="Pionierspark">Pionierspark</option>
                     <option value="Eros">Eros</option>
                     <option value="Hochland Park">Hochland Park</option>
                 </select>
             </div>
-
-            <div class="search-field">
-                <label for="move_in">Move in</label>
-                <input type="date" id="move_in" name="move_in">
-            </div>
+             
 
             <div class="search-field">
                 <label for="max_price">Budget</label>
-                <select id="max_price" name="max_price">
+                <select id="max_price" name="maxPrice">
                     <option value="">Any budget</option>
                     <option value="3000">Under N$3,000</option>
                     <option value="4000">Under N$4,000</option>
@@ -46,14 +42,16 @@ require "includes/header.php";
                 </select>
             </div>
 
+            
             <div class="search-field">
                 <label for="room_type">Room type</label>
-                <select id="room_type" name="room_type">
-                    <option value="">Any type</option>
+                <select id="room_type" name="types">
+                    <option value="single,double">Any type</option>
                     <option value="single">Single</option>
                     <option value="double">Double</option>
                 </select>
             </div>
+
 
             <button type="submit" class="search-button">
                 Search
@@ -105,7 +103,7 @@ $featuredListings = [
 
     <div class="featured-header">
         <h2>Available this semester</h2>
-        <a href="listings.php">Show all</a>
+        <a href="listingandshi/listings.php">Show all</a>
     </div>
 
     <div class="listings-grid">
@@ -114,7 +112,7 @@ $featuredListings = [
 
             <article class="listing-card">
 
-                <a href="listings.php" class="listing-card-link">
+                <a href="listingandshi/listings.php" class="listing-card-link">
 
                     <div class="listing-image">
 

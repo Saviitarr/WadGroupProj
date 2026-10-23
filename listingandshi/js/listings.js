@@ -53,7 +53,13 @@ function createCard(property) {
     photo.appendChild(createElement("span", "cc-image-badge", availability));
 
     const body = createElement("div", "cc-card-body");
-    body.appendChild(createElement("p", "cc-tag", property.type));
+    
+    const roomTypeLabel = property.type === "double"
+        ? "Double room"
+        : "Single room";
+
+    body.appendChild(createElement("p", "cc-tag", roomTypeLabel));
+
     body.appendChild(createElement("h3", "", property.name));
     body.appendChild(createElement(
         "p", "cc-card-sub", property.area + " · " + property.distanceKm + " km to NUST"
@@ -129,7 +135,7 @@ function updateAddressBar() {
     }
 
     const types = getSelectedTypes();
-    if (types.length !== 3) {
+    if (types.length !== 2) {
         params.set("types", types.join(","));
     }
 

@@ -63,7 +63,17 @@ function displayDetails(property) {
         ? property.roomsAvailable + " rooms available"
         : "Fully booked";
 
-    main.appendChild(createElement("p", "cc-tag", property.type + " · " + availability));
+    
+    const roomTypeLabel = property.type === "double"
+        ? "Double room"
+        : "Single room";
+
+    main.appendChild(createElement(
+        "p",
+        "cc-tag",
+        roomTypeLabel + " · " + availability
+    ));
+
     main.appendChild(createElement("h1", "", property.name));
     main.appendChild(createElement(
         "p", "", property.street + ", " + property.area + ", Windhoek · " + property.distanceKm + " km to NUST main campus"

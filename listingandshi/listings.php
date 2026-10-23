@@ -94,20 +94,21 @@
        <legend>
         Room type
        </legend>
-       <div class="cc-types">
+       
+    <div class="cc-types">
+
         <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Single room"/>
-         Single
+            <input checked name="roomType" type="checkbox" value="single">
+            Single
         </label>
+
         <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Shared room"/>
-         Shared
+            <input checked name="roomType" type="checkbox" value="double">
+            Double
         </label>
-        <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Studio"/>
-         Studio
-        </label>
-       </div>
+
+    </div>
+
       </fieldset>
       <div class="cc-field">
        <label class="cc-check">
