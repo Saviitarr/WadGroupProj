@@ -655,3 +655,260 @@ a {
         font-size: 90px;
     }
 }
+
+/* About page */
+.about-page {
+    background-color: white;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+/* About introduction */
+.about-hero {
+    padding: 65px 0;
+}
+
+.about-hero-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 50px;
+}
+
+.about-label {
+    display: block;
+    color: #D7263D;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.about-intro h1 {
+    font-size: 42px;
+    line-height: 1.15;
+    margin-bottom: 22px;
+}
+
+.about-intro p {
+    color: #6A625A;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* About image placeholders */
+.about-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 130px 130px;
+    gap: 12px;
+}
+
+.about-visual-large {
+    background-color: #E8D2C7;
+    border-radius: 16px;
+    grid-row: span 2;
+}
+
+.about-visual-small {
+    background-color: #E9DDCD;
+    border-radius: 16px;
+}
+
+.about-visual-red {
+    background-color: #D7263D;
+    color: white;
+    border-radius: 16px;
+    padding: 20px;
+
+    display: flex;
+    align-items: flex-end;
+}
+
+.about-visual-red p {
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+}
+
+/* Problem and solution */
+.about-problem-section {
+    background-color: #F7F1E8;
+    padding: 50px 0;
+}
+
+.about-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+.about-info-card {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+}
+
+.about-info-card h2 {
+    font-size: 22px;
+    margin-bottom: 15px;
+}
+
+.about-info-card p {
+    color: #6A625A;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.solution-card {
+    border: 2px solid #D7263D;
+}
+
+/* About features */
+.about-features-section {
+    padding: 60px 0 30px;
+}
+
+.about-features-section h2 {
+    font-size: 26px;
+    margin-bottom: 35px;
+}
+
+.about-features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.about-feature-icon {
+    display: block;
+    color: #D7263D;
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.about-feature h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.about-feature p {
+    font-size: 14px;
+    color: #6A625A;
+    line-height: 1.6;
+}
+
+/* Team section */
+.about-team-section {
+    padding: 50px 0 70px;
+}
+
+.about-team-section h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+}
+
+.team-description {
+    font-size: 14px;
+    color: #6A625A;
+    margin-bottom: 25px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 18px;
+}
+
+.team-card {
+    background-color: white;
+    padding: 25px 15px;
+    text-align: center;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+}
+
+.team-avatar {
+    background-color: #F7F1E8;
+    color: #D7263D;
+    border-radius: 50%;
+
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.team-card h3 {
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.team-card p {
+    color: #6A625A;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* Tablet responsiveness */
+@media (max-width: 900px) {
+
+    .about-hero-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .about-features-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+
+    .about-container {
+        padding: 0 20px;
+    }
+
+    .about-hero {
+        padding: 40px 0;
+    }
+
+    .about-intro h1 {
+        font-size: 30px;
+    }
+
+    .about-visual {
+        grid-template-rows: 110px 110px;
+    }
+
+    .about-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-features-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-info-card {
+        padding: 25px;
+    }
+}
