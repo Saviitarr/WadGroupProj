@@ -22,10 +22,10 @@ require "includes/header.php";
                 <label for="location">Where</label>
                 <select id="location" name="area">
                     <option value="">Anywhere near NUST</option>
-                    <option value="Windhoek West">Windhoek West</option>
-                    <option value="Pionierspark">Pionierspark</option>
-                    <option value="Eros">Eros</option>
-                    <option value="Hochland Park">Hochland Park</option>
+                    <?php // Areas come from the database, so the list always matches the real properties ?>
+                    <?php foreach ($pdo->query('SELECT DISTINCT area FROM properties ORDER BY area')->fetchAll(PDO::FETCH_COLUMN) as $area): ?>
+                        <option value="<?= e($area) ?>"><?= e($area) ?></option>
+                    <?php endforeach; ?>
                 </select>
             </div>
              

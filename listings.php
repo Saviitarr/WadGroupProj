@@ -60,34 +60,16 @@ require __DIR__ . '/includes/header.php';
        <legend>
         Room type
        </legend>
-       
-    <div class="cc-types">
-
+       <div class="cc-types">
         <label class="cc-check">
-            <input checked name="roomType" type="checkbox" value="single">
-            Single
+         <input checked name="roomType" type="checkbox" value="Single room"/>
+         Single
         </label>
-
         <label class="cc-check">
-
-<fieldset>
-    <legend>Room type</legend>
-
-    <div class="cc-types">
-
-        <label class="cc-check">
-            <input checked name="roomType" type="checkbox" value="Single room">
-            Single
+         <input checked name="roomType" type="checkbox" value="Double room"/>
+         Double
         </label>
-
-        <label class="cc-check">
-            <input checked name="roomType" type="checkbox" value="Double room">
-            Double
-        </label>
-
-    </div>
-</fieldset>
-
+       </div>
       </fieldset>
       <div class="cc-field">
        <label class="cc-check">
