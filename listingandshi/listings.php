@@ -46,7 +46,7 @@
      Find your place near NUST
     </h1>
     <p>
-     Browse student accommodation in Windhoek. Example listings until the database is connected.
+     Browse student accommodation in Windhoek. Live listings from our database.
     </p>
    </div>
    <div class="cc-listings-layout">
@@ -102,10 +102,6 @@
         <label class="cc-check">
          <input checked="" name="roomType" type="checkbox" value="Shared room"/>
          Shared
-        </label>
-        <label class="cc-check">
-         <input checked="" name="roomType" type="checkbox" value="Studio"/>
-         Studio
         </label>
        </div>
       </fieldset>

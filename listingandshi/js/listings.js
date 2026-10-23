@@ -129,7 +129,7 @@ function updateAddressBar() {
     }
 
     const types = getSelectedTypes();
-    if (types.length !== 3) {
+    if (types.length !== 2) {
         params.set("types", types.join(","));
     }
 
@@ -224,6 +224,34 @@ function restoreFiltersFromURL() {
 
     currentPage = Math.max(1, parseInt(params.get("page") || "1", 10) || 1);
 }
+// Turns the filter form into a query string for the PHP endpoint
+function buildQuery() {
+    const params = new URLSearchParams();
+
+    if (searchInput.value.trim() !== "") params.set("search", searchInput.value.trim());
+    if (areaInput.value !== "") params.set("area", areaInput.value);
+    if (minPriceInput.value !== "") params.set("minPrice", minPriceInput.value);
+    if (maxPriceInput.value !== "") params.set("maxPrice", maxPriceInput.value);
+    params.set("types", getSelectedTypes().join(","));
+    if (availableInput.checked) params.set("available", "1");
+
+    return params.toString();
+}
+
+// Asks the server for matching rooms, then redraws
+function loadAndDisplay() {
+    window.loadCampusConnectListings(buildQuery())
+        .then(function (items) {
+            accommodations = items;
+            loadError.hidden = true;
+            displayListings();
+        })
+        .catch(function (error) {
+            console.error(error);
+            resultCount.textContent = "";
+            loadError.hidden = false;
+        });
+}
 
 function resetFilters() {
     filtersForm.reset();
@@ -235,7 +263,7 @@ function resetFilters() {
 
     sortInput.value = "distance-asc";
     currentPage = 1;
-    displayListings();
+        loadAndDisplay();
 }
 
 function refreshResults(event) {
@@ -243,7 +271,7 @@ function refreshResults(event) {
         event.preventDefault();
     }
     currentPage = 1;
-    displayListings();
+        loadAndDisplay();
 }
 
 filtersForm.addEventListener("submit", refreshResults);
@@ -267,7 +295,7 @@ window.loadCampusConnectListings()
         }
 
         restoreFiltersFromURL();
-        displayListings();
+            loadAndDisplay();
     })
     .catch(function (error) {
         console.error(error);

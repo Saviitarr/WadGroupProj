@@ -104,7 +104,7 @@ function displayDetails(property) {
 
 const listingId = new URLSearchParams(window.location.search).get("id");
 
-window.loadCampusConnectListings()
+window.loadCampusConnectListings("id=" + encodeURIComponent(listingId || ""))
     .then(function (listings) {
         const property = listings.find(function (item) {
             return item.id === listingId;

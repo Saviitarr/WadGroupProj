@@ -1,5 +1,4 @@
-window.CAMPUS_CONNECT_LISTINGS_ENDPOINT = null;
-
+window.CAMPUS_CONNECT_LISTINGS_ENDPOINT = "../api/listings.php";
 window.CampusConnectListings = [
     {
         "id": 1,
@@ -149,12 +148,13 @@ window.CampusConnectListings = [
     }
 ];
 
-window.loadCampusConnectListings = async function () {
+window.loadCampusConnectListings = async function (query) {
     let data = window.CampusConnectListings;
     const endpoint = window.CAMPUS_CONNECT_LISTINGS_ENDPOINT;
 
     if (endpoint) {
-        const response = await fetch(endpoint, {
+        const url = query ? endpoint + "?" + query : endpoint;
+        const response = await fetch(url, {
             headers: { Accept: "application/json" }
         });
 
