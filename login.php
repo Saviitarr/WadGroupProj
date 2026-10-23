@@ -92,6 +92,7 @@ require 'includes/header.php';
         <p class="muted small">Admins log in here too and are taken to the admin area.</p>
     </div>
 </main>
+
 <script src="js/auth-form.js"></script>
 
 <?php require 'includes/footer.php'; ?>

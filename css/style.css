@@ -1240,3 +1240,15 @@ a {
         font-size: 13px;
     }
 }
+
+/* Login password visibility */
+.auth-password-toggle {
+    background: none;
+    border: none;
+    color: #B01F33;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 6px;
+    text-decoration: underline;
+}
